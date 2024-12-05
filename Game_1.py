@@ -25,9 +25,11 @@ pygame.draw.circle(screen, RED, circle_center, circle_radius)
 ellipse_width = 100
 ellipse_height = 60
 ellipse_center = (WINDOW_WIDTH - ellipse_width // 2, WINDOW_HEIGHT // 2)
-pygame.draw.ellipse(screen, BLACK, (ellipse_center[0] - ellipse_width // 2, ellipse_center[1] - ellipse_height // 2, ellipse_width, ellipse_height))
+pygame.draw.ellipse(screen, BLACK, (
+ellipse_center[0] - ellipse_width // 2, ellipse_center[1] - ellipse_height // 2, ellipse_width, ellipse_height))
 
 pygame.display.flip()
+
 
 def stay():
     finish = False
@@ -35,5 +37,6 @@ def stay():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 finish = True
+
 
 stay()
