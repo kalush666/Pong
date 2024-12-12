@@ -3,6 +3,57 @@ from Paddle import Paddle
 from pygame.locals import *
 from Ball import Ball
 
+import mysql.connector
+from mysql.connector import Error
+
+def connect_to_db():
+    try:
+        # Establish a connection to the MySQL server
+        db_connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="jonathan06",
+            database="pong_game"
+        )
+
+        if db_connection.is_connected():
+            print("Connected to MySQL database")
+        return db_connection
+    except Error as e:
+        print("Error while connecting to MySQL", e)
+        return None
+
+
+
+
+def save_game_result(player1_score, player2_score):
+    db_connection = connect_to_db()
+    if db_connection:
+        cursor = db_connection.cursor()
+
+        query = """
+        INSERT INTO game_results (player1_score, player2_score)
+        VALUES (%s, %s)
+        """
+        data = (player1_score, player2_score)
+
+        cursor.execute(query, data)
+        db_connection.commit()
+
+        cursor.close()
+        db_connection.close()
+    else:
+        print("Failed to save game result: No database connection")
+
+
+
+# Example usage after each game
+player1_score = 10  # Example score
+player2_score = 8  # Example score
+winner = "Player 1"  # Example winner
+
+
+
 # Define the dimensions of the game window.
 WINDOW_WIDTH = 720
 WINDOW_HEIGHT = 720
@@ -82,6 +133,10 @@ def main():
 
         # Limit the game loop to 60 frames per second for smoother gameplay.
         pygame.time.Clock().tick(60)
+
+    save_game_result(player1_score, player2_score)
+
+
 
 # Run the game if this script is executed directly.
 if __name__ == '__main__':
