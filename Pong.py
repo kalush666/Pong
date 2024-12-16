@@ -63,6 +63,10 @@ size = (WINDOW_WIDTH, WINDOW_HEIGHT)
 
 # Initialize pygame and create the display.
 pygame.init()
+pygame.mixer.init()
+sound_effect = pygame.mixer.Sound('score.mp3')
+
+
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Pong")  # Set the title of the game window.
 
@@ -106,10 +110,14 @@ def main():
 
         # Check if the ball goes past the left or right edge of the screen.
         if ball.x < 0:  # Ball goes out on the left side (player 1's goal).
-            player2_score += 1  # Increment player 2's score.
+            player2_score += 1
+            sound_effect.play()
+            # Increment player 2's score.
             ball.reset(320, 240)  # Reset the ball to the center.
         elif ball.x > WINDOW_WIDTH:  # Ball goes out on the right side (player 2's goal).
-            player1_score += 1  # Increment player 1's score.
+            player1_score += 1
+            sound_effect.play()
+            # Increment player 1's score.
             ball.reset(320, 240)  # Reset the ball to the center.
 
         # Clear the screen by filling it with black.
